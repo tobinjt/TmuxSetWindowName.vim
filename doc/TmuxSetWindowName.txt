@@ -1,0 +1,59 @@
+*TmuxSetWindowName.txt* Set the title of a tmux pane to the name of the file
+ you're editing in vim or nvim.
+
+=============================================================================
+Introduction
+
+Sets the title of the current tmux pane when the filename you're editing
+changes or the status of the file you're editing changes.  This makes it
+easier to find the right tmux pane when you have many panes or editors open.
+If you're not using tmux the plugin doesn't do anything.
+
+=============================================================================
+Installation
+
+This is a standard vim plugin, please follow the instructions of your plugin
+manager to install.
+
+=============================================================================
+Usage
+
+The plugin sets up `autocmds` when loaded, there aren't any commands to run.
+
+=============================================================================
+Configuration
+
+The plugin configures everything automatically.  There is one tunable you can
+set:
+
+- `g:TmuxSetWindowName_minimum_timeout_between_title_updates` (default 5) sets
+  the minimum number of seconds between pane title changes when the changes
+  are less important.
+
+=============================================================================
+License
+
+Licensed under the Apache 2.0 licence, see the LICENSE file included in the
+repository.
+
+=============================================================================
+Bugs
+
+None known.
+
+=============================================================================
+Contributing
+
+Contributions are welcome :)  Please open an issue or send a pull request.
+
+=============================================================================
+Changelog
+
+Version 1.0.0: initial release.
+
+=============================================================================
+Credits
+
+Written by John Tobin <johntobin@johntobin.ie>
+
+vim:tw=78:sw=2:ts=2:ft=help:norl:nowrap:
