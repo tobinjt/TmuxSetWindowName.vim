@@ -31,7 +31,7 @@ def TmuxGetWindowName(): string
   # Returns:
   #   string, the name of the current window, or an error message if the name
   #   can't be found.
-  var cmd = 'tmux display-message -p "#W"'
+  var cmd = ['tmux', 'display-message', '-t', $TMUX_PANE, '-p', '#W']
   var result = system(cmd)->trim()
   if v:shell_error != 0 || empty(result)
     return 'Unable to find window name'
@@ -60,11 +60,8 @@ def TmuxSetWindowName(name: string, ignore_timeout: bool)
     return
   endif
 
-  system('tmux rename-window -t '
-    .. shellescape($TMUX_PANE)
-    .. ' '
-    .. shellescape(name)
-    .. ' 2>&1')
+  var cmd = ['tmux', 'rename-window', '-t', $TMUX_PANE, name]
+  system(cmd)
 enddef
 
 def TmuxFormatFilenameForDisplay(filename: string): string

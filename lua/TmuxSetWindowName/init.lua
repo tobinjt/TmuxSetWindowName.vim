@@ -26,7 +26,15 @@ function M.tmux_get_window_name()
   -- Returns:
   --   string, the name of the current window, or an error message if the name
   --   can't be found.
-  local result = vim.fn.system('tmux display-message -p "#W"'):gsub('%s+$', '')
+  local command = {
+    'tmux',
+    'display-message',
+    '-t',
+    vim.env.TMUX_PANE,
+    '-p',
+    '#W',
+  }
+  local result = vim.fn.system(command):gsub('%s+$', '')
   if vim.v.shell_error ~= 0 or result == '' then
     return 'Unable to find window name'
   end
@@ -54,8 +62,14 @@ function M.tmux_set_window_name(name, ignore_timeout)
     return
   end
 
-  local pane_id = vim.env.TMUX_PANE
-  vim.fn.system({ 'tmux', 'rename-window', '-t', pane_id, name })
+  local command = {
+    'tmux',
+    'rename-window',
+    '-t',
+    vim.env.TMUX_PANE,
+    name,
+  }
+  vim.fn.system(command)
 end
 
 function M.tmux_format_filename_for_display(filename)
