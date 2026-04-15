@@ -43,7 +43,8 @@ function M.tmux_set_window_name(name, ignore_timeout)
   --                   hasn't expired.
   local current_timestamp = os.time()
   local minimum_delay = M.config.minimum_timeout_between_title_updates
-  if not ignore_timeout and (M.state.last_update_timestamp + minimum_delay) > current_timestamp then
+  local next_update_timestamp = M.state.last_update_timestamp + minimum_delay
+  if not ignore_timeout and next_update_timestamp > current_timestamp then
     return
   end
   M.state.last_update_timestamp = current_timestamp
@@ -107,7 +108,7 @@ function M.setup(opts)
     return
   end
 
-  vim.g.loaded_TmuxSetWindowName = '2025-07-06'
+  vim.g.loaded_TmuxSetWindowName = '2026-04-15'
 
   local defaults = {
     -- How many seconds to wait between title updates. This doesn't apply when
