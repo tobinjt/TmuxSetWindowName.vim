@@ -33,7 +33,7 @@ def TmuxGetWindowName(): string
   #   can't be found.
   var cmd = ['tmux', 'display-message', '-t', $TMUX_PANE, '-p', '#W']
   var result = system(cmd)->trim()
-  if v:shell_error != 0 || empty(result)
+  if v:shell_error != 0
     return 'Unable to find window name'
   endif
   return result

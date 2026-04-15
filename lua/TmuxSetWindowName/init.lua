@@ -35,7 +35,7 @@ function M.tmux_get_window_name()
     '#W',
   }
   local result = vim.fn.system(command):gsub('%s+$', '')
-  if vim.v.shell_error ~= 0 or result == '' then
+  if vim.v.shell_error ~= 0 then
     return 'Unable to find window name'
   end
   return result
