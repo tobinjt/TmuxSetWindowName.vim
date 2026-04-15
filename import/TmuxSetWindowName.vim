@@ -89,7 +89,8 @@ def TmuxSetWindowName(name: string, ignore_timeout: bool)
   # has passed or ignore_timeout is true.
   #
   # Args:
-  #   name: the new name of the window
+  #   name: the new name of the window. The original window name will be
+  #         prepended to this.
   #   ignore_timeout: if ignore_timeout is true, update even if the timeout
   #                   hasn't expired.
   var current_timestamp = localtime()
@@ -100,6 +101,7 @@ def TmuxSetWindowName(name: string, ignore_timeout: bool)
   endif
   last_update_timestamp = current_timestamp
 
+  name = orig_window_name .. ' ' .. name
   var current_window_name = TmuxGetWindowName()
   if current_window_name == name
     return

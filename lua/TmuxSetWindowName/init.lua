@@ -84,7 +84,8 @@ function M.tmux_set_window_name(name, ignore_timeout)
   -- has passed or ignore_timeout is true.
   --
   -- Args:
-  --   name: the new name of the window
+  --   name: the new name of the window. The original window name will be
+  --         prepended to this.
   --   ignore_timeout: if ignore_timeout is true, update even if the timeout
   --                   hasn't expired.
   local current_timestamp = os.time()
@@ -94,6 +95,7 @@ function M.tmux_set_window_name(name, ignore_timeout)
   end
   M.state.last_update_timestamp = current_timestamp
 
+  name = M.state.orig_window_name .. ' ' .. name
   local current_window_name = M.tmux_get_window_name()
   if current_window_name == name then
     return
