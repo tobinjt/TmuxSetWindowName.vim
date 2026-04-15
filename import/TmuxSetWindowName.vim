@@ -130,7 +130,7 @@ def TmuxFormatFilenameForDisplay(filename: string): string
     ->mapnew((_, v) => '[' .. v .. ']')
     ->join('')
 
-  return ['vim', additional_info, filename]->filter((_, v) => !empty(v))->join(' ')
+  return [orig_window_name, 'vim', additional_info, filename]->filter((_, v) => !empty(v))->join(' ')
 enddef
 
 def TmuxSetWindowNameToFilename(ignore_timeout: bool)

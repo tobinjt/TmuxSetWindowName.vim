@@ -112,6 +112,9 @@ function M.tmux_format_filename_for_display(filename)
   -- Returns:
   --   string, the formatted filename to display.
   local parts = { 'nvim' }
+  if M.state.orig_window_name ~= '' then
+    table.insert(parts, 1, M.state.orig_window_name)
+  end
 
   local additional_info = ''
   if vim.bo.readonly then
