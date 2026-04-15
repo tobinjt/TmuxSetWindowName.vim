@@ -20,63 +20,17 @@ M.state = {
   orig_window_name = nil,
 }
 
-function M.tmux_get_window_list()
-  -- Return a list of tmux windows in the current session.
-  --
-  -- Returns:
-  --   List of strings in the format "{pane_id} #{window_name}".
-  local cmd = 'tmux list-windows -F "#{pane_id} #{window_name}" 2>&1'
-  return vim.fn.systemlist(cmd)
-end
-
-function M.tmux_window_list_to_dict(window_list)
-  -- Convert the output of tmux_get_window_list() to a dict mapping window
-  -- numbers to window titles.
-  --
-  -- We start with lines like:
-  --   %0 vim foo.txt
-  --   %1
-  -- Then return:
-  --   dict = {
-  --     ['%0'] = 'vim foo.txt',
-  --     ['%1'] = '',
-  --   }
-  --
-  -- Args:
-  --   window_list: list of strings returned by tmux_get_window_list().
-  --
-  -- Returns:
-  --   Dict mapping window ID to window title.
-  local dict = {}
-  for _, line in ipairs(window_list) do
-    local id, name = line:match("^(%%%d+) (.*)$")
-    if id then
-      dict[id] = name
-    else
-      -- Handle the case where name might be empty
-      id = line:match("^(%%%d+)$")
-      if id then
-        dict[id] = ""
-      else
-        vim.notify('TmuxWindowListToDict: Unparsed line: "' .. line .. '"', vim.log.levels.INFO)
-      end
-    end
-  end
-  return dict
-end
-
 function M.tmux_get_window_name()
   -- Get the name of the current window.
   --
   -- Returns:
   --   string, the name of the current window, or an error message if the name
   --   can't be found.
-  local window_names = M.tmux_window_list_to_dict(M.tmux_get_window_list())
-  local pane_id = vim.env.TMUX_PANE
-  if window_names[pane_id] then
-    return window_names[pane_id]
+  local result = vim.fn.system('tmux display-message -p "#W"'):gsub('%s+$', '')
+  if vim.v.shell_error ~= 0 or result == '' then
+    return 'Unable to find window name'
   end
-  return 'Unable to find window name'
+  return result
 end
 
 function M.tmux_set_window_name(name, ignore_timeout)

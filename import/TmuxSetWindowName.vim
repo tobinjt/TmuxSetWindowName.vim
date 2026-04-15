@@ -25,63 +25,18 @@ if !exists('g:TmuxSetWindowName_minimum_timeout_between_title_updates')
   g:TmuxSetWindowName_minimum_timeout_between_title_updates = 5
 endif
 
-def TmuxGetWindowList(): list<string>
-  # Return a list of tmux windows in the current session.
-  #
-  # Returns:
-  #   List of strings in the format "{pane_id} #{window_name}".
-  var cmd = 'tmux list-windows -F "#{pane_id} #{window_name}" 2>&1'
-  return systemlist(cmd)
-enddef
-
-def TmuxWindowListToDict(window_list: list<string>): dict<string>
-  # Convert the output of TmuxGetWindowList() to a dict mapping window numbers
-  # to window titles.
-  #
-  # We start with lines like:
-  #   %0 vim foo.txt
-  #   %1
-  # Then return:
-  #   dict = {
-  #     '%0': 'vim foo.txt',
-  #     '%1': '',
-  #   }
-  #
-  # Args:
-  #   window_list: list of strings returned by TmuxGetWindowList().
-  #
-  # Returns:
-  #   Dict mapping window ID to window title.
-  var d = {}
-  for line in window_list
-    var matches = matchlist(line, '^\(%\d\+\) \(.*\)$')
-    if !empty(matches)
-      d[matches[1]] = matches[2]
-    else
-      # Handle the case where name might be empty
-      var id_match = matchlist(line, '^\(%\d\+\)$')
-      if !empty(id_match)
-        d[id_match[1]] = ''
-      else
-        echomsg 'TmuxWindowListToDict: Unparsed line: "' .. line .. '"'
-      endif
-    endif
-  endfor
-  return d
-enddef
-
 def TmuxGetWindowName(): string
   # Get the name of the current window.
   #
   # Returns:
   #   string, the name of the current window, or an error message if the name
   #   can't be found.
-  var window_names = TmuxWindowListToDict(TmuxGetWindowList())
-  if has_key(window_names, $TMUX_PANE)
-    return window_names[$TMUX_PANE]
+  var cmd = 'tmux display-message -p "#W"'
+  var result = system(cmd)->trim()
+  if v:shell_error != 0 || empty(result)
+    return 'Unable to find window name'
   endif
-
-  return 'Unable to find window name'
+  return result
 enddef
 
 def TmuxSetWindowName(name: string, ignore_timeout: bool)
