@@ -1,0 +1,71 @@
+#!/usr/bin/env -S "populate_pre_commit"
+repos:
+  # managed-by-populate-pre-commit start: conventional-pre-commit.yaml
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.4.0
+    hooks:
+    - id: conventional-pre-commit
+      stages:
+      - commit-msg
+      args:
+      - --verbose
+  # managed-by-populate-pre-commit end: conventional-pre-commit.yaml
+  # managed-by-populate-pre-commit start: hooks.yaml
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+    - id: check-case-conflict
+    - id: check-executables-have-shebangs
+    - id: check-illegal-windows-names
+    - id: check-merge-conflict
+    - id: check-vcs-permalinks
+    - id: check-yaml
+    - id: destroyed-symlinks
+    - id: fix-byte-order-marker
+    - id: mixed-line-ending
+  # managed-by-populate-pre-commit end: hooks.yaml
+  # managed-by-populate-pre-commit start: keep-sorted.yaml
+  - repo: https://github.com/google/keep-sorted
+    rev: v0.9.0
+    hooks:
+    - id: keep-sorted
+  # managed-by-populate-pre-commit end: keep-sorted.yaml
+  # managed-by-populate-pre-commit start: markdownlint.yaml
+  - repo: local
+    hooks:
+    - id: markdownlint
+      name: Run `markdownlint`
+      language: system
+      types:
+      - markdown
+      exclude: CODE_OF_CONDUCT.md
+      entry: markdownlint
+  # managed-by-populate-pre-commit end: markdownlint.yaml
+  # managed-by-populate-pre-commit start: meta.yaml
+  - repo: meta
+    hooks:
+    - id: check-hooks-apply
+  # managed-by-populate-pre-commit end: meta.yaml
+  # managed-by-populate-pre-commit start: readme-toc.yaml
+  - repo: https://github.com/thlorenz/doctoc
+    rev: v2.5.0
+    hooks:
+    - id: doctoc
+      files: README.md
+      args:
+      - --notitle
+      - --minlevel=2
+      - --mintocitems=3
+      - --github
+  # managed-by-populate-pre-commit end: readme-toc.yaml
+  # managed-by-populate-pre-commit start: spellcheck.yaml
+  - repo: local
+    hooks:
+    - id: spellcheck
+      stages:
+      - commit-msg
+      name: Check spelling
+      language: system
+      verbose: true
+      entry: spell-check-wrapper
+  # managed-by-populate-pre-commit end: spellcheck.yaml
