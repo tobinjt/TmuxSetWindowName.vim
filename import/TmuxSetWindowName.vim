@@ -15,7 +15,7 @@ endif
 if exists('g:loaded_TmuxSetWindowName')
   finish
 endif
-g:loaded_TmuxSetWindowName = '2026-04-15'
+g:loaded_TmuxSetWindowName = '2026-06-28'
 
 var last_update_timestamp = 0
 # How many seconds to wait between title updates. This doesn't apply when
@@ -77,7 +77,11 @@ def TmuxFormatFilenameForDisplay(filename: string): string
     ->mapnew((_, v) => '[' .. v .. ']')
     ->join('')
 
-  return [orig_window_name, 'vim', additional_info, filename]
+  # Using ' | ' as a separator after the original window name.
+  var window_name = empty(orig_window_name)
+    ? 'vim'
+    : orig_window_name .. ' | vim'
+  return [window_name, additional_info, filename]
     ->filter((_, v) => !empty(v))
     ->join(' ')
 enddef

@@ -77,6 +77,8 @@ function M.tmux_format_filename_for_display(filename)
   --   string, the formatted filename to display.
   local parts = { 'nvim' }
   if M.state.orig_window_name ~= '' then
+    -- Using ' | ' as a separator after the original window name.
+    table.insert(parts, 1, '|')
     table.insert(parts, 1, M.state.orig_window_name)
   end
 
@@ -117,7 +119,7 @@ function M.setup(opts)
     return
   end
 
-  vim.g.loaded_TmuxSetWindowName = '2026-04-15'
+  vim.g.loaded_TmuxSetWindowName = '2026-06-28'
 
   local defaults = {
     -- How many seconds to wait between title updates. This doesn't apply when
