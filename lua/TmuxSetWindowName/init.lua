@@ -57,11 +57,6 @@ function M.tmux_set_window_name(name, ignore_timeout)
   end
   M.state.last_update_timestamp = current_timestamp
 
-  local current_window_name = M.tmux_get_window_name()
-  if current_window_name == name then
-    return
-  end
-
   local command = {
     'tmux',
     'rename-window',

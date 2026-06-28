@@ -55,11 +55,6 @@ def TmuxSetWindowName(name: string, ignore_timeout: bool)
   endif
   last_update_timestamp = current_timestamp
 
-  var current_window_name = TmuxGetWindowName()
-  if current_window_name == name
-    return
-  endif
-
   var cmd = ['tmux', 'rename-window', '-t', $TMUX_PANE, name]
   system(cmd)
 enddef
