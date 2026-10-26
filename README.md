@@ -1,8 +1,6 @@
 # TmuxSetWindowName.vim
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<!-- doctoc-disable -->
 
 Set the title of the [tmux](https://github.com/tmux/tmux) pane to the name of
 the file you're editing in [vim](https://www.vim.org) or
