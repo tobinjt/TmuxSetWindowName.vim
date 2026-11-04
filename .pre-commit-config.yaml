@@ -1,7 +1,17 @@
 #!/usr/bin/env -S "populate_pre_commit"
 
 # managed-by-populate-pre-commit start: header
-# Placeholder
+# Install all the hook types I use rather than just pre-commit.
+default_install_hook_types: [pre-commit, pre-push, commit-msg]
+
+# https://prek.j178.dev/benchmark/?h=priority#3-priority
+priorities:
+    generator: 10
+    formatter: 20
+    formatter-late: 25
+    linter: 30
+    tests: 40
+    coverage: 50
 # managed-by-populate-pre-commit end: header
 
 repos:
@@ -9,10 +19,12 @@ repos:
   - repo: meta
     hooks:
     - id: check-hooks-apply
+      priority: linter
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.4.0
     hooks:
     - id: conventional-pre-commit
+      priority: linter
       stages:
       - commit-msg
       args:
@@ -21,36 +33,48 @@ repos:
     rev: v6.0.0
     hooks:
     - id: check-case-conflict
+      priority: linter
     - id: check-executables-have-shebangs
+      priority: linter
     - id: check-illegal-windows-names
+      priority: linter
     - id: check-merge-conflict
+      priority: linter
     - id: check-vcs-permalinks
+      priority: linter
     - id: check-yaml
+      priority: linter
     - id: destroyed-symlinks
+      priority: linter
     - id: fix-byte-order-marker
+      priority: linter
     - id: mixed-line-ending
+      priority: linter
   - repo: local
     hooks:
     - id: make_github_workflows
       name: Run `make_github_workflows`
+      priority: generator
       language: system
       always_run: true
       pass_filenames: false
-      entry: make_github_workflows
+      entry: env ./.github/dependabot.yml
   - repo: local
     hooks:
     - id: populate_pre_commit
       name: Run `populate_pre_commit`
+      priority: generator
       language: system
       always_run: true
       pass_filenames: false
-      entry: populate_pre_commit
+      entry: env ./.pre-commit-config.yaml
   - repo: local
     hooks:
     - id: spellcheck
       stages:
       - commit-msg
       name: Check spelling
+      priority: linter
       language: system
       verbose: true
       entry: spell-check-wrapper
@@ -60,6 +84,7 @@ repos:
     hooks:
     - id: markdownlint
       name: Run `markdownlint`
+      priority: linter
       language: system
       types:
       - markdown
@@ -69,6 +94,7 @@ repos:
     hooks:
     - id: mermaid-pre-commit
       name: Run `mermaid-pre-commit`
+      priority: linter
       language: system
       types:
       - markdown
